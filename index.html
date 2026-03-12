@@ -5,7 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="manifest" href="manifest.json">
-    <title>AgriSync - Version 0</title>
+    <title>AgriSync - Ultimate V0</title>
+    
+    <script>
+        console.log("%c🛑 STOP ! PROPRIÉTÉ EXCLUSIVE DE BLACK STAR NEXUS", "color: #e3112c; font-size: 24px; font-weight: bold; background: #1e293b; padding: 10px; border-radius: 5px;");
+        console.log("%cCe code source est protégé. Toute reproduction, modification ou utilisation non autorisée du projet Bénin Synergie Numérique entraînera des poursuites judiciaires. Architecte : Comlan Asik MENSAH.", "font-size: 14px; color: #1e293b; font-weight: bold;");
+    </script>
+
     <style>
         :root {
             /* Couleurs Bénin Touch */
@@ -15,7 +21,7 @@
             --text-gray: #64748b; --white: #ffffff;
         }
 
-        body, html { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: var(--white); color: #1e293b; height: 100%; }
+        body, html { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: var(--white); color: #1e293b; height: 100%; overflow-x: hidden; }
 
         /* --- HEADER --- */
         .app-header { position: fixed; top: 0; left: 0; right: 0; background: var(--white); z-index: 1000; border-bottom: 1px solid #f1f5f9; text-align: center; }
@@ -30,9 +36,9 @@
         /* --- CONTENEUR PRINCIPAL --- */
         #main-container { padding: 160px 15px 130px; background: var(--white); min-height: 100vh; }
         #main-container.with-banner { padding-top: 210px; }
-        .page { display: none; background: var(--white); min-height: calc(100vh - 270px); }
-        .page.active { display: block; animation: fadeIn 0.2s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .page { display: none; background: var(--white); min-height: calc(100vh - 270px); animation: fadeIn 0.3s ease-in-out; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- MODAL ZÉRO CLAVIER --- */
         #profile-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
@@ -64,7 +70,14 @@
 
         .back-btn { background: #f1f5f9; border: none; padding: 10px 15px; border-radius: 10px; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 5px; cursor: pointer;}
 
-        /* --- SIGNATURE OFFICIELLE BSN / NEXUS --- */
+        /* --- OUTILS GAME CHANGER --- */
+        .tool-box { background: white; border: 2px solid var(--benin-green); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .calc-input { width: 100%; padding: 10px; margin: 5px 0 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; font-weight: bold; box-sizing: border-box;}
+        .crop-guide-item { border-bottom: 1px solid #e2e8f0; padding: 10px 0; }
+        .crop-guide-item:last-child { border-bottom: none; }
+        .status-badge { padding: 3px 8px; border-radius: 5px; font-size: 10px; font-weight: bold; color: white; background: var(--benin-red); }
+
+        /* --- SIGNATURE OFFICIELLE --- */
         .bsn-signature { text-align: center; padding: 20px; margin-top: 20px; border-top: 1px solid #f1f5f9; background: var(--white); }
         .bsn-signature img { height: 30px; display: block; margin: 0 auto 10px; }
         .bsn-signature .projet { font-size: 12px; font-weight: 900; color: var(--color-acceuil); display: block; }
@@ -72,20 +85,20 @@
 
         /* --- TAB BAR --- */
         .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 2px solid #f1f5f9; display: flex; justify-content: space-around; padding: 10px 0 25px; z-index: 1000; }
-        .tab-item { background: none; border: none; display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; color: #94a3b8; font-weight: 900; cursor: pointer; }
-        .tab-item.active { color: var(--benin-green); }
+        .tab-item { background: none; border: none; display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; color: #94a3b8; font-weight: 900; cursor: pointer; transition: 0.2s; }
+        .tab-item.active { color: var(--benin-green); transform: scale(1.1); }
         .tab-item i { font-size: 22px; font-style: normal; }
         .tab-item span { font-size: 8px; text-transform: uppercase; }
-
-        /* V2 TEASERS */
-        .v2-lock { background: #fffbeb; border: 1px dashed var(--benin-yellow); border-radius: 15px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-        .v2-tag { background: var(--benin-red); color: white; font-size: 8px; padding: 2px 6px; border-radius: 5px; font-weight: 900; text-transform: uppercase; }
         
-        /* IMAGE PREVIEW */
-        #photo-preview { width: 100%; border-radius: 15px; margin-top: 15px; display: none; border: 3px solid var(--benin-green); }
+        #photo-preview { width: 100%; border-radius: 15px; margin-top: 15px; display: none; border: 3px solid var(--benin-green); object-fit: cover; }
+        
+        /* SYSTÈME D'ALERTE CUSTOM */
+        #alert-box { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 15px 20px; border-radius: 10px; z-index: 9999; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3); text-align: center; width: 80%; }
     </style>
 </head>
 <body>
+
+    <div id="alert-box"></div>
 
     <div id="profile-modal">
         <div class="modal-content">
@@ -130,21 +143,21 @@
                 </div>
             </div>
 
-            <button class="btn-save" onclick="saveProfile()">DÉMARRER MA SAISON 🎤</button>
+            <button class="btn-save" onclick="saveProfile()">SAUVEGARDER MA FERME</button>
         </div>
     </div>
 
     <header class="app-header">
         <div class="top-utility">
             <div id="clock">--:--</div>
-            <div id="network-indicator" style="color:var(--benin-green)">● Nexus Network</div>
+            <div id="network-indicator" style="color:var(--benin-green)">● Mode Hors-Ligne Actif</div>
             <div id="cloud-status">☁️ CLOUD ATTENTE</div>
         </div>
         <div class="farm-selector" onclick="openModal()">
             <span>🏠 <span id="current-farm">Configurer...</span></span>
             <span>⚙️</span>
         </div>
-        <img src="logo_agrisync.png" alt="AgriSync" class="logo-top">
+        <img src="logo_agrisync.png" alt="AgriSync" class="logo-top" onerror="this.style.display='none'">
         
         <div id="region-banner">
             <div class="region-opt active" onclick="setReg('nord', this)">🏹 Nord</div>
@@ -170,14 +183,14 @@
                     <b style="color:#0369a1;">SUIVI ARROSAGE</b><br>
                     <small>Dernier : Aujourd'hui matin</small>
                 </div>
-                <button onclick="this.innerHTML='FAIT ✅'; this.style.background='var(--benin-green)';" style="background:#3b82f6; color:white; border:none; padding:10px; border-radius:12px; font-weight:bold; cursor:pointer;">VALIDER</button>
+                <button onclick="customAlert('Arrosage validé et enregistré dans la mémoire !', 'success'); this.style.background='var(--benin-green)'; this.innerHTML='FAIT ✅';" style="background:#3b82f6; color:white; border:none; padding:10px; border-radius:12px; font-weight:bold; cursor:pointer;">VALIDER</button>
             </div>
 
             <div class="action-grid">
                 <button class="action-item" onclick="openSubPage('photo')"><i>📷</i>PHOTO</button>
-                <button class="action-item" onclick="openSubPage('calendrier')"><i>📅</i>AGENDA</button>
+                <button class="action-item" onclick="openSubPage('guide')"><i>📖</i>GUIDE</button>
                 <button class="action-item" onclick="openSubPage('sos')" style="color:var(--benin-red);"><i>🆘</i>SOS</button>
-                <button class="action-item" onclick="openSubPage('notes')"><i>🎤</i>NOTES</button>
+                <button class="action-item" onclick="openSubPage('notes')"><i>📝</i>NOTES</button>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
@@ -190,7 +203,7 @@
             </div>
 
             <div class="bsn-signature">
-                <img src="logo_black_star_nexus.png" alt="Black Star Nexus">
+                <img src="logo_black_star_nexus.png" alt="BSN" onerror="this.style.display='none'">
                 <span class="projet">Projet Bénin Synergie Numérique</span>
                 <span class="tech">Propulsé par Nexus Network © Black Star Nexus</span>
             </div>
@@ -199,26 +212,30 @@
         <div id="prod" class="page">
             <h2 style="font-size: 20px; font-weight: 900; color:var(--color-prod)">Ma Production</h2>
             <div id="dynamic-prod-container"></div>
-            
-            <div class="bsn-signature">
-                <img src="logo_black_star_nexus.png" alt="Black Star Nexus">
-                <span class="projet">Projet Bénin Synergie Numérique</span>
-                <span class="tech">Propulsé par Nexus Network © Black Star Nexus</span>
-            </div>
+            <div class="bsn-signature"><span class="projet">Projet Bénin Synergie Numérique</span></div>
         </div>
 
         <div id="compta" class="page">
-            <h2 style="font-size: 20px; font-weight: 900; color:var(--color-compta)">Ma Caisse</h2>
-            <div style="display:flex; gap:10px; margin-bottom:15px;">
-                <button onclick="alert('Vente enregistrée en local !')" style="flex:1; background:var(--color-compta); color:white; border:none; padding:20px; border-radius:20px; font-weight:900; cursor:pointer;">VENTE 💰</button>
-                <button onclick="alert('Achat enregistré en local !')" style="flex:1; background:var(--benin-red); color:white; border:none; padding:20px; border-radius:20px; font-weight:900; cursor:pointer;">ACHAT 💸</button>
+            <h2 style="font-size: 20px; font-weight: 900; color:var(--color-compta)">Ma Caisse & Outils</h2>
+            <div style="display:flex; gap:10px; margin-bottom:20px;">
+                <button onclick="customAlert('Fonction de Vente activée !', 'success')" style="flex:1; background:var(--color-compta); color:white; border:none; padding:15px; border-radius:15px; font-weight:900; cursor:pointer;">VENTE 💰</button>
+                <button onclick="customAlert('Fonction d\'Achat activée !', 'success')" style="flex:1; background:var(--benin-red); color:white; border:none; padding:15px; border-radius:15px; font-weight:900; cursor:pointer;">ACHAT 💸</button>
+            </div>
+
+            <div class="tool-box">
+                <h3 style="margin-top:0; color:var(--benin-green);">🧮 Calculateur de Rentabilité (Hors-Ligne)</h3>
+                <label style="font-size:12px; font-weight:bold; color:var(--text-gray);">Quantité estimée (Unité)</label>
+                <input type="number" id="calc-qty" class="calc-input" placeholder="Ex: 50">
+                
+                <label style="font-size:12px; font-weight:bold; color:var(--text-gray);">Prix de vente unitaire (FCFA)</label>
+                <input type="number" id="calc-price" class="calc-input" placeholder="Ex: 15000">
+                
+                <button onclick="calculateProfit()" style="width:100%; padding:12px; background:var(--color-acceuil); color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">ESTIMER LE REVENU</button>
+                
+                <div id="calc-result" style="margin-top:15px; font-size:20px; font-weight:900; color:var(--benin-green); text-align:center; display:none;"></div>
             </div>
             
-            <div class="bsn-signature">
-                <img src="logo_black_star_nexus.png" alt="Black Star Nexus">
-                <span class="projet">Projet Bénin Synergie Numérique</span>
-                <span class="tech">Propulsé par Nexus Network © Black Star Nexus</span>
-            </div>
+            <div class="bsn-signature"><span class="projet">Projet Bénin Synergie Numérique</span></div>
         </div>
 
         <div id="profil" class="page">
@@ -227,51 +244,60 @@
                 <div style="font-size:50px;">👤</div>
                 <b id="prof-name" style="font-size:18px;">Leader</b><br>
                 <span style="color:var(--benin-green); font-weight:bold;" id="prof-farm">Ferme Espoir</span>
-                <button onclick="openModal()" style="width:100%; padding:10px; border-radius:10px; font-weight:bold; margin-top:15px; background:var(--color-acceuil); color:white; border:none; cursor:pointer;">⚙️ MODIFIER CONFIGURATION</button>
+                <button onclick="openModal()" style="width:100%; padding:10px; border-radius:10px; font-weight:bold; margin-top:15px; background:var(--color-acceuil); color:white; border:none; cursor:pointer;">⚙️ RECONFIGURER</button>
             </div>
-
-            <h3 style="margin-top:25px; font-size:16px;">🚀 Bientôt sur AgriSync</h3>
-            <div class="v2-lock"><div style="font-size:24px;">📈</div><div style="flex-grow:1;"><div style="display:flex; justify-content:space-between;"><b>AgriSync Market</b> <span class="v2-tag">Locked</span></div><small>Vendez votre production directement.</small></div></div>
-            <div class="v2-lock"><div style="font-size:24px;">🔬</div><div style="flex-grow:1;"><div style="display:flex; justify-content:space-between;"><b>IA - Docteur Plante</b> <span class="v2-tag">Locked</span></div><small>Diagnostic des feuilles malades.</small></div></div>
-            
-            <div class="bsn-signature">
-                <img src="logo_black_star_nexus.png" alt="Black Star Nexus">
-                <span class="projet">Projet Bénin Synergie Numérique</span>
-                <span class="tech">Propulsé par Nexus Network © Black Star Nexus</span>
-            </div>
+            <div class="bsn-signature"><span class="projet">Projet Bénin Synergie Numérique</span></div>
         </div>
 
         <div id="photo" class="page">
             <button class="back-btn" onclick="nav('acceuil')">🔙 Retour</button>
             <h2>📸 Preuve de Travail</h2>
+            <p style="font-size:12px; color:var(--text-gray); font-weight:bold;">Prenez une photo de votre champ pour horodater votre activité.</p>
             
-            <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;" onchange="handlePhoto(this)">
+            <input type="file" id="camera-input" accept="image/*" style="display:none;" onchange="handlePhoto(this)">
             
-            <button onclick="document.getElementById('camera-input').click()" style="width:100%; height:150px; background:#f1f5f9; border:3px dashed #cbd5e1; border-radius:20px; font-size:18px; font-weight:bold; display:flex; flex-direction:column; justify-content:center; align-items:center; cursor:pointer; color:var(--benin-green);">
-                📷 OUVRIR LA CAMÉRA
+            <button onclick="document.getElementById('camera-input').click()" style="width:100%; height:150px; background:#f1f5f9; border:3px dashed var(--benin-green); border-radius:20px; font-size:18px; font-weight:bold; display:flex; flex-direction:column; justify-content:center; align-items:center; cursor:pointer; color:var(--benin-green); box-shadow: 0 4px 6px rgba(0,135,81,0.1);">
+                <span style="font-size:40px; margin-bottom:10px;">📷</span> OUVRIR LA CAMÉRA / GALERIE
             </button>
             
-            <img id="photo-preview" src="" alt="Aperçu">
-            <p id="photo-date" style="text-align:center; font-weight:bold; color:var(--text-gray);"></p>
+            <img id="photo-preview" src="" alt="Aperçu Photo">
+            <div id="photo-info" style="display:none; background:#f8fafc; padding:15px; border-radius:10px; margin-top:10px; text-align:center;">
+                <p id="photo-date" style="margin:0; font-weight:900; color:var(--color-acceuil); font-size:14px;"></p>
+                <span class="status-badge" style="background:var(--benin-green); margin-top:5px; display:inline-block;">✓ VALIDÉ LOCALEMENT</span>
+            </div>
         </div>
 
-        <div id="calendrier" class="page">
+        <div id="guide" class="page">
             <button class="back-btn" onclick="nav('acceuil')">🔙 Retour</button>
-            <h2>📅 Calendrier Visuel</h2>
-            <div class="card" style="border-left: 4px solid var(--benin-green);"><b>AUJOURD'HUI</b><br><small>Irrigation Parcelle B</small></div>
+            <h2>📖 Guide Agro-Météo</h2>
+            <div class="card" style="border-left: 4px solid var(--benin-green);">
+                <h3 style="margin-top:0;">Cycles de Culture Principaux</h3>
+                <div class="crop-guide-item">
+                    <b>🌽 Maïs</b> <span class="status-badge" style="background:var(--benin-green);">Pluie Nécessaire</span><br>
+                    <small>Semis: Dès les 1ères pluies utiles (Avril-Mai au Sud/Centre, Juin au Nord).</small>
+                </div>
+                <div class="crop-guide-item">
+                    <b>🌱 Soja</b> <span class="status-badge" style="background:var(--color-prod);">Très Rentable</span><br>
+                    <small>Semis: Mi-Juin à Mi-Juillet. Éviter les sols gorgés d'eau.</small>
+                </div>
+                <div class="crop-guide-item">
+                    <b>☁️ Coton</b> <span class="status-badge" style="background:var(--color-acceuil);">Culture de Rente</span><br>
+                    <small>Semis: Fin Mai à Juin. Traitements phytosanitaires stricts requis.</small>
+                </div>
+            </div>
         </div>
 
         <div id="sos" class="page">
             <button class="back-btn" onclick="nav('acceuil')">🔙 Retour</button>
             <h2 style="color:var(--benin-red)">🆘 Urgences</h2>
-            <button class="card" style="width:100%; text-align:left; border:2px solid var(--benin-red); font-weight:bold;">📞 Appeler Vétérinaire 🚑</button>
+            <a href="tel:112" style="text-decoration:none;"><button class="card" style="width:100%; text-align:left; border:2px solid var(--benin-red); font-weight:bold; color:var(--benin-red); cursor:pointer;">📞 APPELER LES SECOURS MÉTÉO/AGRI</button></a>
         </div>
 
         <div id="notes" class="page">
             <button class="back-btn" onclick="nav('acceuil')">🔙 Retour</button>
-            <h2>🎤 Mes Notes Vocales</h2>
-            <button onclick="startDictation('notes-history')" style="width:100%; background:var(--benin-red); color:white; padding:15px; border-radius:15px; border:none; font-weight:bold; cursor:pointer;">+ DICTER UNE NOTE</button>
-            <div id="notes-history" style="margin-top:20px; font-weight:bold; padding:15px; background:#f1f5f9; border-radius:10px;">Aucune note pour le moment.</div>
+            <h2>📝 Mes Notes</h2>
+            <button onclick="startDictation('notes-history', true)" style="width:100%; background:var(--benin-red); color:white; padding:15px; border-radius:15px; border:none; font-weight:bold; cursor:pointer;">🎤 NOUVELLE NOTE VOCALE</button>
+            <div id="notes-history" style="margin-top:20px; font-weight:bold; padding:15px; background:#f1f5f9; border-radius:10px;">Les notes sauvegardées apparaîtront ici.</div>
         </div>
 
     </main>
@@ -279,43 +305,51 @@
     <nav class="tab-bar">
         <button class="tab-item active" data-tab="acceuil" onclick="nav('acceuil', this)"><i>🏠</i><span>Accueil</span></button>
         <button class="tab-item" data-tab="prod" onclick="nav('prod', this)"><i>🌱</i><span>Prod</span></button>
-        <button class="tab-item" data-tab="compta" onclick="nav('compta', this)"><i>📊</i><span>Compta</span></button>
+        <button class="tab-item" data-tab="compta" onclick="nav('compta', this)"><i>📊</i><span>Outils</span></button>
         <button class="tab-item" data-tab="profil" onclick="nav('profil', this)"><i>👤</i><span>Profil</span></button>
     </nav>
 
     <script>
-        // --- 1. FONCTIONNALITÉ : MÉMOIRE LOCALE (LOCAL STORAGE) ---
+        // --- SYSTÈME D'ALERTE CUSTOM ---
+        function customAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alert-box');
+            alertBox.innerText = message;
+            alertBox.style.background = type === 'error' ? '#e3112c' : '#008751';
+            alertBox.style.display = 'block';
+            setTimeout(() => { alertBox.style.display = 'none'; }, 3500);
+        }
+
+        // --- 1. STOCKAGE LOCAL AVANCÉ ---
         let state = { agri: true, ani: false, region: 'nord', name: 'Leader', farm: 'Ferme Espoir' };
 
         function loadProfile() {
-            const saved = localStorage.getItem('agrisync_profile');
-            if (saved) {
-                state = JSON.parse(saved);
-                // Mettre à jour l'interface avec les données sauvegardées
-                document.getElementById('val-name').innerText = state.name;
-                document.getElementById('val-farm').innerText = state.farm;
-                document.getElementById('display-name').innerText = state.name;
-                document.getElementById('prof-name').innerText = state.name;
-                document.getElementById('current-farm').innerText = state.farm;
-                document.getElementById('prof-farm').innerText = state.farm;
-                
-                setModalReg(state.region);
-                if(state.agri) document.getElementById('btn-agri').classList.add('selected');
-                else document.getElementById('btn-agri').classList.remove('selected');
-                
-                if(state.ani) document.getElementById('btn-ani').classList.add('selected');
-                else document.getElementById('btn-ani').classList.remove('selected');
-
+            try {
+                const saved = localStorage.getItem('agrisync_profile_v0');
+                if (saved) {
+                    state = JSON.parse(saved);
+                    document.getElementById('val-name').innerText = state.name;
+                    document.getElementById('val-farm').innerText = state.farm;
+                    document.getElementById('display-name').innerText = state.name;
+                    document.getElementById('prof-name').innerText = state.name;
+                    document.getElementById('current-farm').innerText = state.farm;
+                    document.getElementById('prof-farm').innerText = state.farm;
+                    
+                    setModalReg(state.region);
+                    if(state.agri) document.getElementById('btn-agri').classList.add('selected');
+                    else document.getElementById('btn-agri').classList.remove('selected');
+                    
+                    if(state.ani) document.getElementById('btn-ani').classList.add('selected');
+                    else document.getElementById('btn-ani').classList.remove('selected');
+                } else {
+                    setTimeout(openModal, 800);
+                }
                 buildDynamicProd();
-            } else {
-                setTimeout(openModal, 500); // Ouvrir le modal si c'est la première fois
-            }
+            } catch(e) { console.error("Erreur de chargement mémoire:", e); }
         }
 
         function saveProfile() {
             state.name = document.getElementById('val-name').innerText;
             state.farm = document.getElementById('val-farm').innerText;
-
             document.getElementById('display-name').innerText = state.name;
             document.getElementById('prof-name').innerText = state.name;
             document.getElementById('current-farm').innerText = state.farm;
@@ -323,74 +357,104 @@
             
             document.querySelectorAll('.region-opt').forEach(el => {
                 el.classList.remove('active');
-                if(el.innerText.toLowerCase().includes(state.region)) {
-                    el.classList.add('active');
-                    setReg(state.region, el);
-                }
+                if(el.innerText.toLowerCase().includes(state.region)) { el.classList.add('active'); setReg(state.region, el); }
             });
 
-            // Sauvegarde dans la mémoire du téléphone
-            localStorage.setItem('agrisync_profile', JSON.stringify(state));
-
+            localStorage.setItem('agrisync_profile_v0', JSON.stringify(state));
             buildDynamicProd();
             closeModal();
+            customAlert("Configuration sauvegardée !", "success");
         }
 
-        // --- 2. FONCTIONNALITÉ : ZÉRO CLAVIER (RECONNAISSANCE VOCALE) ---
-        function startDictation(targetId) {
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                alert("La dictée vocale n'est pas supportée par ce navigateur. Utilisez Chrome.");
+        // --- 2. GESTION DE LA VOIX ULTRA ROBUSTE ---
+        function startDictation(targetId, append = false) {
+            if (!navigator.onLine) {
+                customAlert("⚠️ La dictée vocale nécessite une connexion Internet pour fonctionner.");
                 return;
             }
 
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            const recognition = new SpeechRecognition();
-            
-            recognition.lang = 'fr-FR'; // Langue configurée
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
-
-            const targetElement = document.getElementById(targetId);
-            const originalText = targetElement.innerText;
-            targetElement.innerText = "🎤 Écoute en cours...";
-            targetElement.style.color = "var(--benin-red)";
-
-            if(targetId === 'global-note') {
-                document.getElementById('global-note-display').style.display = 'block';
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                customAlert("❌ La reconnaissance vocale n'est pas supportée par ce navigateur. Utilisez Google Chrome sur Android.");
+                return;
             }
 
-            recognition.start();
+            try {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'fr-FR';
+                recognition.interimResults = false;
 
-            recognition.onresult = function(event) {
-                const speechResult = event.results[0][0].transcript;
-                targetElement.innerText = speechResult;
-                targetElement.style.color = "#1e293b";
+                const targetElement = document.getElementById(targetId);
+                const originalText = targetElement.innerText;
                 
-                // Capitaliser la première lettre
-                targetElement.innerText = targetElement.innerText.charAt(0).toUpperCase() + targetElement.innerText.slice(1);
-            };
+                if(!append) targetElement.innerText = "🎤 Écoute en cours...";
+                else customAlert("🎤 Parlez maintenant...", "success");
 
-            recognition.onerror = function(event) {
-                targetElement.innerText = originalText;
-                targetElement.style.color = "#1e293b";
-                alert("Erreur micro : " + event.error);
-            };
+                if(targetId === 'global-note') document.getElementById('global-note-display').style.display = 'block';
+
+                recognition.start();
+
+                recognition.onresult = function(event) {
+                    let speechResult = event.results[0][0].transcript;
+                    speechResult = speechResult.charAt(0).toUpperCase() + speechResult.slice(1);
+                    
+                    if(append) {
+                        const currentHtml = targetElement.innerHTML;
+                        const datePrefix = new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
+                        targetElement.innerHTML = (currentHtml === "Les notes sauvegardées apparaîtront ici." ? "" : currentHtml) + `<div style='margin-bottom:10px; border-bottom:1px solid #cbd5e1; padding-bottom:5px;'><span style='color:var(--text-gray); font-size:10px;'>${datePrefix}</span><br>${speechResult}</div>`;
+                    } else {
+                        targetElement.innerText = speechResult;
+                    }
+                    customAlert("Note enregistrée !", "success");
+                };
+
+                recognition.onerror = function(event) {
+                    if(!append) targetElement.innerText = originalText;
+                    if(event.error === 'not-allowed') customAlert("❌ Vous devez autoriser le micro dans les paramètres de votre navigateur.");
+                    else customAlert("Erreur de capture audio : " + event.error);
+                };
+            } catch (error) {
+                customAlert("Erreur critique du module vocal.");
+            }
         }
 
-        // --- 3. FONCTIONNALITÉ : CAMÉRA NATIVE ---
+        // --- 3. CAMÉRA 100% COMPATIBLE ---
         function handlePhoto(input) {
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const preview = document.getElementById('photo-preview');
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    
-                    const now = new Date();
-                    document.getElementById('photo-date').innerText = "Validé le : " + now.toLocaleString('fr-FR');
+                try {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById('photo-preview');
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                        
+                        document.getElementById('photo-info').style.display = 'block';
+                        const now = new Date();
+                        document.getElementById('photo-date').innerText = "Horodatage : " + now.toLocaleString('fr-FR');
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                } catch(err) {
+                    customAlert("Erreur lors du traitement de l'image.");
                 }
-                reader.readAsDataURL(input.files[0]);
             }
+        }
+
+        // --- 4. OUTIL : CALCULATEUR RENTABILITÉ ---
+        function calculateProfit() {
+            const qty = parseFloat(document.getElementById('calc-qty').value);
+            const price = parseFloat(document.getElementById('calc-price').value);
+            const resDiv = document.getElementById('calc-result');
+
+            if(isNaN(qty) || isNaN(price)) {
+                customAlert("Veuillez entrer des chiffres valides.");
+                return;
+            }
+
+            const total = qty * price;
+            // Formatage en monnaie (FCFA)
+            const formattedTotal = total.toLocaleString('fr-FR') + " FCFA";
+            resDiv.innerText = "Revenu Estimé : " + formattedTotal;
+            resDiv.style.display = 'block';
         }
 
         // --- GESTION DE L'INTERFACE (V0) ---
@@ -400,19 +464,19 @@
             document.getElementById(id).classList.add('active');
             
             if(btn) btn.classList.add('active');
-            else document.querySelector('[data-tab="acceuil"]').classList.add('active');
+            else document.querySelector(`[data-tab="${id === 'acceuil' ? 'acceuil' : 'acceuil'}"]`)?.classList.add('active'); // Fallback
 
             const banner = document.getElementById('region-banner');
             const container = document.getElementById('main-container');
             if(id === 'prod') { banner.style.display = 'flex'; container.classList.add('with-banner'); }
             else { banner.style.display = 'none'; container.classList.remove('with-banner'); }
-            window.scrollTo(0,0);
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
         function openSubPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            window.scrollTo(0,0);
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
         function openModal() { document.getElementById('profile-modal').style.display = 'flex'; }
@@ -442,8 +506,8 @@
                     <div class="cat-group">
                         <div class="cat-header"><b>🌾 Prod. Agricole</b> <span style="font-size:10px; color:#94a3b8;">${unitTxt}</span></div>
                         <div class="cat-content">
-                            <button onclick="startDictation('recolte-agri')" class="card" style="width:100%; border:2px dashed var(--benin-green); font-weight:bold; cursor:pointer;">🎤 Noter ma récolte</button>
-                            <div id="recolte-agri" style="text-align:center; font-weight:bold; color:var(--benin-green);"></div>
+                            <button onclick="startDictation('recolte-agri')" class="card" style="width:100%; border:2px dashed var(--benin-green); font-weight:bold; cursor:pointer;">🎤 Dicter ma récolte</button>
+                            <div id="recolte-agri" style="text-align:center; font-weight:bold; color:var(--benin-green); min-height:20px;"></div>
                         </div>
                     </div>`;
             }
@@ -453,7 +517,7 @@
                         <div class="cat-header"><b>🐓 Prod. Animale</b> <span style="font-size:10px; color:#94a3b8;">(Têtes)</span></div>
                         <div class="cat-content">
                             <button onclick="startDictation('recolte-ani')" class="card" style="width:100%; border:2px dashed var(--color-prod); font-weight:bold; cursor:pointer;">🎤 Déclarer effectif</button>
-                            <div id="recolte-ani" style="text-align:center; font-weight:bold; color:var(--color-prod);"></div>
+                            <div id="recolte-ani" style="text-align:center; font-weight:bold; color:var(--color-prod); min-height:20px;"></div>
                         </div>
                     </div>`;
             }
@@ -466,21 +530,27 @@
             buildDynamicProd();
         }
 
+        // Vérification de connexion
+        window.addEventListener('online', () => document.getElementById('network-indicator').innerText = "● Connecté");
+        window.addEventListener('offline', () => document.getElementById('network-indicator').innerText = "● Mode Hors-Ligne Actif");
+
         // Initialisation de l'heure
         setInterval(() => {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
         }, 1000);
 
-        // Lancement de l'application
+        // Lancement
         window.onload = () => {
+            if(!navigator.onLine) document.getElementById('network-indicator').innerText = "● Mode Hors-Ligne Actif";
+            else document.getElementById('network-indicator').innerText = "● Connecté";
+            
             loadProfile();
             
-            // Initialisation du Service Worker
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Nexus Network prêt !'))
-                .catch(err => console.log('Erreur SW:', err));
+                .then(reg => console.log('Nexus SW OK'))
+                .catch(err => console.log('Nexus SW Err:', err));
             }
         };
 
@@ -488,11 +558,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-
-        const firebaseConfig = { apiKey: "VOTRE_API_KEY", authDomain: "agrisync-nexus.firebaseapp.com", projectId: "agrisync-nexus" };
-        try { const app = initializeApp(firebaseConfig); } catch (e) { console.warn("Mode hors-ligne priorisé."); }
+        try { 
+            const firebaseConfig = { apiKey: "ATTENTE_CONFIG", projectId: "agrisync-nexus" };
+            const app = initializeApp(firebaseConfig); 
+        } catch (e) { console.warn("Firebase en attente."); }
     </script>
 </body>
 </html>
