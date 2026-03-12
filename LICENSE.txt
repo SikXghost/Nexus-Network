@@ -1,0 +1,50 @@
+===========================================================
+INTELLECTUAL PROPERTY & RIGHTS RESERVED - AGRISYNC
+PROPRIÉTÉ INTELLECTUELLE ET DROITS RÉSERVÉS - AGRISYNC
+===========================================================
+
+DATE: March 12, 2026 / 12 Mars 2026
+LOCATION: Accra, Ghana
+AUTHOR / AUTEUR: Comlan Asik MENSAH
+
+HIERARCHY / HIÉRARCHIE :
+- Company / Compagnie: Black Star Nexus
+- Sector / Secteur: Nexus Network
+- Project / Projet: Bénin Synergie Numérique (BSN)
+- Product / Produit: AgriSync (Version 0)
+
+-----------------------------------------------------------
+EN: OWNERSHIP DECLARATION
+The source code, user interface (UI), icons, logos, and 
+operating concepts (Zero-Keyboard, Offline Sync) contained 
+in this repository are the exclusive personal property of 
+Comlan Asik MENSAH.
+
+FR: DÉCLARATION DE PROPRIÉTÉ
+Le code source, l'interface utilisateur (UI), les icônes, 
+les logos et les concepts de fonctionnement (Zéro Clavier, 
+Synchronisation Hors-Ligne) contenus dans ce dépôt sont 
+la propriété exclusive et personnelle de Comlan Asik MENSAH.
+
+-----------------------------------------------------------
+EN: RESTRICTIONS
+1. ALL RIGHTS RESERVED: No part of this application may be 
+   reproduced or distributed without prior written consent.
+2. COMMERCIAL USE: Any commercial exploitation by a third 
+   party is strictly prohibited.
+
+FR: RESTRICTIONS
+1. TOUS DROITS RÉSERVÉS : Aucune partie de cette application 
+   ne peut être reproduite ou distribuée sans accord écrit.
+2. UTILISATION COMMERCIALE : Toute exploitation commerciale 
+   par un tiers est strictement interdite.
+
+-----------------------------------------------------------
+LEGAL PROTECTION / PROTECTION JURIDIQUE
+This document serves as proof of creation on the date 
+mentioned above. / Ce document sert de preuve de création 
+à la date mentionnée ci-dessus.
+
+Signed in Accra, March 12, 2026.
+Comlan Asik MENSAH
+Founder, Black Star Nexus

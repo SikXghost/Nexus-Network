@@ -1,0 +1,1105 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="manifest.json" />
+    <title>AgriSync - Version 0</title>
+    <style>
+      :root {
+        /* Couleurs Bénin Touch */
+        --benin-green: #008751;
+        --benin-yellow: #fedd00;
+        --benin-red: #e3112c;
+        /* Couleurs App */
+        --color-acceuil: #1e293b;
+        --color-prod: #f59e0b;
+        --color-compta: #10b981;
+        --text-gray: #64748b;
+        --white: #ffffff;
+      }
+
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: var(--white);
+        color: #1e293b;
+        height: 100%;
+      }
+
+      /* --- HEADER --- */
+      .app-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        z-index: 1000;
+        border-bottom: 1px solid #f1f5f9;
+        text-align: center;
+      }
+      .top-utility {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f8fafc;
+        padding: 6px 15px;
+        font-size: 11px;
+        font-weight: 900;
+        color: #94a3b8;
+      }
+      .farm-selector {
+        background: var(--color-acceuil);
+        color: white;
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        border-bottom: 3px solid var(--benin-yellow);
+      }
+      .logo-top {
+        width: 120px;
+        margin: 5px auto;
+        display: block;
+      }
+
+      #region-banner {
+        display: none;
+        justify-content: space-around;
+        background: #f1f5f9;
+        padding: 8px;
+        margin: 5px 15px;
+        border-radius: 15px;
+      }
+      .region-opt {
+        font-size: 16px;
+        padding: 5px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        filter: grayscale(1);
+        transition: 0.3s;
+      }
+      .region-opt.active {
+        filter: grayscale(0);
+        background: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-bottom: 2px solid var(--benin-green);
+      }
+
+      /* --- CONTENEUR PRINCIPAL (FOND BLANC STRICT POUR LES LOGOS) --- */
+      #main-container {
+        padding: 160px 15px 130px;
+        background: var(--white);
+        min-height: 100vh;
+      }
+      #main-container.with-banner {
+        padding-top: 210px;
+      }
+      .page {
+        display: none;
+        background: var(--white);
+        min-height: calc(100vh - 270px);
+      }
+      .page.active {
+        display: block;
+        animation: fadeIn 0.2s;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* --- MODAL ZÉRO CLAVIER --- */
+      #profile-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+      }
+      .modal-content {
+        background: var(--white);
+        width: 100%;
+        max-width: 400px;
+        border-radius: 20px;
+        padding: 20px;
+        max-height: 90vh;
+        overflow-y: auto;
+        border-top: 5px solid var(--benin-green);
+      }
+      .input-group {
+        margin-bottom: 15px;
+        background: #f8fafc;
+        padding: 10px;
+        border-radius: 15px;
+        border: 1px solid #e2e8f0;
+      }
+      .input-group label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        font-weight: 900;
+        color: var(--text-gray);
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .mic-dictation {
+        background: var(--benin-red);
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .quick-tags {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      .tag {
+        background: white;
+        border: 1px solid #cbd5e1;
+        padding: 5px 10px;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .tag:active {
+        background: var(--benin-green);
+        color: white;
+      }
+      .val-display {
+        font-size: 16px;
+        font-weight: bold;
+        color: #1e293b;
+        padding: 5px 0;
+        border-bottom: 2px dashed #cbd5e1;
+      }
+      .checkbox-group {
+        display: flex;
+        gap: 10px;
+      }
+      .checkbox-btn {
+        flex: 1;
+        padding: 10px;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 13px;
+        background: white;
+      }
+      .checkbox-btn.selected {
+        background: var(--benin-green);
+        color: white;
+        border-color: var(--benin-green);
+      }
+      .btn-save {
+        background: var(--benin-green);
+        color: white;
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+
+      /* --- COMPOSANTS UI --- */
+      .card {
+        background: #f8fafc;
+        border-radius: 20px;
+        padding: 15px;
+        margin-bottom: 15px;
+        border: 1px solid #f1f5f9;
+      }
+      .water-widget {
+        background: #e0f2fe;
+        border: 2px solid #3b82f6;
+        border-radius: 20px;
+        padding: 15px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .mic-btn-main {
+        background: var(--benin-red);
+        color: white;
+        border: none;
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        font-size: 28px;
+        position: fixed;
+        bottom: 100px;
+        right: 20px;
+        box-shadow: 0 8px 20px rgba(227, 17, 44, 0.4);
+        z-index: 1001;
+      }
+      .action-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .action-item {
+        background: #f1f5f9;
+        padding: 12px 5px;
+        border-radius: 15px;
+        text-align: center;
+        font-size: 10px;
+        font-weight: 900;
+        color: #475569;
+        border: none;
+        cursor: pointer;
+      }
+      .action-item:active {
+        border-color: var(--benin-yellow);
+      }
+      .action-item i {
+        font-size: 24px;
+        display: block;
+        margin-bottom: 5px;
+        font-style: normal;
+      }
+
+      .cat-group {
+        background: #f8fafc;
+        border-radius: 20px;
+        margin-bottom: 12px;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+      }
+      .cat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px;
+        background: white;
+        font-weight: 900;
+      }
+      .cat-content {
+        padding: 15px;
+        background: var(--white);
+      }
+
+      .back-btn {
+        background: #f1f5f9;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* --- V2 TEASERS (PROFIL) --- */
+      .v2-lock {
+        background: #fffbeb;
+        border: 1px dashed var(--benin-yellow);
+        border-radius: 15px;
+        padding: 12px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .v2-tag {
+        background: var(--benin-red);
+        color: white;
+        font-size: 8px;
+        padding: 2px 6px;
+        border-radius: 5px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      /* --- SIGNATURE OFFICIELLE BSN / NEXUS --- */
+      .bsn-signature {
+        text-align: center;
+        padding: 20px;
+        margin-top: 20px;
+        border-top: 1px solid #f1f5f9;
+        background: var(--white);
+      }
+      .bsn-signature img {
+        height: 30px;
+        display: block;
+        margin: 0 auto 10px;
+      }
+      .bsn-signature .projet {
+        font-size: 12px;
+        font-weight: 900;
+        color: var(--color-acceuil);
+        display: block;
+      }
+      .bsn-signature .tech {
+        font-size: 9px;
+        font-weight: bold;
+        color: #94a3b8;
+        text-transform: uppercase;
+        display: block;
+        margin-top: 4px;
+      }
+
+      /* --- TAB BAR --- */
+      .tab-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 2px solid #f1f5f9;
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0 25px;
+        z-index: 1000;
+      }
+      .tab-item {
+        background: none;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        flex: 1;
+        color: #94a3b8;
+        font-weight: 900;
+        cursor: pointer;
+      }
+      .tab-item.active {
+        color: var(--benin-green);
+      }
+      .tab-item i {
+        font-size: 22px;
+        font-style: normal;
+      }
+      .tab-item span {
+        font-size: 8px;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="profile-modal">
+      <div class="modal-content">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+          "
+        >
+          <b style="font-size: 18px">⚙️ Configuration Ferme</b>
+          <button
+            onclick="closeModal()"
+            style="
+              border: none;
+              background: none;
+              font-size: 24px;
+              font-weight: bold;
+            "
+          >
+            ×
+          </button>
+        </div>
+
+        <div class="input-group">
+          <label
+            >Nom du Leader
+            <button
+              class="mic-dictation"
+              onclick="dictate('val-name', 'Écoute...')"
+            >
+              🎤 Dicter
+            </button></label
+          >
+          <div class="val-display" id="val-name">Leader</div>
+          <div class="quick-tags">
+            <span class="tag" onclick="setVal('val-name', 'Dada')">Dada</span>
+            <span class="tag" onclick="setVal('val-name', 'Fofo')">Fofo</span>
+            <span class="tag" onclick="setVal('val-name', 'Patron')"
+              >Patron</span
+            >
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label
+            >Nom Exploitation
+            <button
+              class="mic-dictation"
+              onclick="dictate('val-farm', 'Écoute...')"
+            >
+              🎤 Dicter
+            </button></label
+          >
+          <div class="val-display" id="val-farm">Ferme Espoir</div>
+          <div class="quick-tags">
+            <span class="tag" onclick="setVal('val-farm', 'Ma Ferme')"
+              >Ma Ferme</span
+            >
+            <span class="tag" onclick="setVal('val-farm', 'Coopérative')"
+              >Coopérative</span
+            >
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Région (Unités)</label>
+          <div class="checkbox-group">
+            <div
+              class="checkbox-btn selected"
+              id="reg-nord"
+              onclick="setModalReg('nord')"
+            >
+              🏹 Nord
+            </div>
+            <div
+              class="checkbox-btn"
+              id="reg-centre"
+              onclick="setModalReg('centre')"
+            >
+              🥁 Centre
+            </div>
+            <div class="checkbox-btn" id="reg-sud" onclick="setModalReg('sud')">
+              🌊 Sud
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Type de Production</label>
+          <div class="checkbox-group">
+            <div
+              class="checkbox-btn selected"
+              id="btn-agri"
+              onclick="toggleProdType('agri')"
+            >
+              🌾 Agricole
+            </div>
+            <div
+              class="checkbox-btn"
+              id="btn-ani"
+              onclick="toggleProdType('ani')"
+            >
+              🐓 Animale
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-save" onclick="saveProfile()">
+          DÉMARRER MA SAISON 🎤
+        </button>
+      </div>
+    </div>
+
+    <header class="app-header">
+      <div class="top-utility">
+        <div id="clock">--:--</div>
+        <div id="network-indicator" style="color: var(--benin-green)">
+          ● Nexus Network
+        </div>
+        <div id="sync-status">☁️ SYNC</div>
+      </div>
+      <div class="farm-selector" onclick="openModal()">
+        <span>🏠 <span id="current-farm">Configurer...</span></span>
+        <span>⚙️</span>
+      </div>
+      <img src="logo_agrisync.png" alt="AgriSync" class="logo-top" />
+
+      <div id="region-banner">
+        <div class="region-opt active" onclick="setReg('nord', this)">
+          🏹 Nord
+        </div>
+        <div class="region-opt" onclick="setReg('centre', this)">🥁 Centre</div>
+        <div class="region-opt" onclick="setReg('sud', this)">🌊 Sud</div>
+      </div>
+    </header>
+
+    <button
+      class="mic-btn-main"
+      onclick="alert('Micro : En attente de vos instructions...')"
+    >
+      🎤
+    </button>
+
+    <main id="main-container">
+      <div id="acceuil" class="page active">
+        <div
+          style="
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--color-acceuil);
+            margin-bottom: 10px;
+          "
+        >
+          Bonjour, <span id="display-name">Leader</span> ! 👋🏿
+        </div>
+
+        <div class="water-widget">
+          <div style="font-size: 30px">💧</div>
+          <div style="flex-grow: 1">
+            <b style="color: #0369a1">SUIVI ARROSAGE</b><br />
+            <small>Dernier : Aujourd'hui matin</small>
+          </div>
+          <button
+            style="
+              background: #3b82f6;
+              color: white;
+              border: none;
+              padding: 10px;
+              border-radius: 12px;
+              font-weight: bold;
+            "
+          >
+            FAIT ✅
+          </button>
+        </div>
+
+        <div class="action-grid">
+          <button class="action-item" onclick="openSubPage('photo')">
+            <i>📷</i>PHOTO
+          </button>
+          <button class="action-item" onclick="openSubPage('calendrier')">
+            <i>📅</i>AGENDA
+          </button>
+          <button
+            class="action-item"
+            onclick="openSubPage('sos')"
+            style="color: var(--benin-red)"
+          >
+            <i>🆘</i>SOS
+          </button>
+          <button class="action-item" onclick="openSubPage('notes')">
+            <i>🎤</i>NOTES
+          </button>
+        </div>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+          "
+        >
+          <div
+            class="card"
+            style="
+              text-align: center;
+              margin-bottom: 0;
+              border-top: 3px solid var(--benin-green);
+            "
+          >
+            <small><b>TONTINE BSN</b></small
+            ><br /><b>15.000 F</b>
+          </div>
+          <div
+            class="card"
+            style="
+              text-align: center;
+              margin-bottom: 0;
+              border-top: 3px solid var(--benin-yellow);
+            "
+          >
+            <small><b>REPUTATION</b></small
+            ><br /><span style="color: var(--benin-yellow)">⭐⭐⭐⭐★</span>
+          </div>
+        </div>
+
+        <div
+          class="card"
+          style="
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          "
+        >
+          <button
+            style="
+              background: black;
+              border: none;
+              color: white;
+              width: 35px;
+              height: 35px;
+              border-radius: 50%;
+            "
+          >
+            ▶
+          </button>
+          <b>Radio Champ 📻</b>
+        </div>
+
+        <div class="bsn-signature">
+          <img src="logo_black_star_nexus.png" alt="Black Star Nexus" />
+          <span class="projet">Projet Bénin Synergie Numérique</span>
+          <span class="tech"
+            >Propulsé par Nexus Network © Black Star Nexus</span
+          >
+        </div>
+      </div>
+
+      <div id="prod" class="page">
+        <h2 style="font-size: 20px; font-weight: 900; color: var(--color-prod)">
+          Ma Production
+        </h2>
+        <div id="dynamic-prod-container"></div>
+
+        <div class="bsn-signature">
+          <img src="logo_black_star_nexus.png" alt="Black Star Nexus" />
+          <span class="projet">Projet Bénin Synergie Numérique</span>
+          <span class="tech"
+            >Propulsé par Nexus Network © Black Star Nexus</span
+          >
+        </div>
+      </div>
+
+      <div id="compta" class="page">
+        <h2
+          style="font-size: 20px; font-weight: 900; color: var(--color-compta)"
+        >
+          Ma Caisse
+        </h2>
+        <div style="display: flex; gap: 10px; margin-bottom: 15px">
+          <button
+            style="
+              flex: 1;
+              background: var(--color-compta);
+              color: white;
+              border: none;
+              padding: 20px;
+              border-radius: 20px;
+              font-weight: 900;
+            "
+          >
+            VENTE 💰
+          </button>
+          <button
+            style="
+              flex: 1;
+              background: var(--benin-red);
+              color: white;
+              border: none;
+              padding: 20px;
+              border-radius: 20px;
+              font-weight: 900;
+            "
+          >
+            ACHAT 💸
+          </button>
+        </div>
+        <div
+          class="card"
+          style="
+            background: #ecfdf5;
+            border-left: 4px solid var(--color-compta);
+          "
+        >
+          <b>📊 COÛT DE PRODUCTION</b><br />
+          <small>Estimation auto par photo</small><br />
+          <b style="font-size: 18px">Total: 24.500 F</b>
+        </div>
+
+        <div class="bsn-signature">
+          <img src="logo_black_star_nexus.png" alt="Black Star Nexus" />
+          <span class="projet">Projet Bénin Synergie Numérique</span>
+          <span class="tech"
+            >Propulsé par Nexus Network © Black Star Nexus</span
+          >
+        </div>
+      </div>
+
+      <div id="profil" class="page">
+        <h2 style="font-size: 20px; font-weight: 900">Mon Espace</h2>
+        <div
+          class="card"
+          style="
+            text-align: center;
+            border-bottom: 3px solid var(--benin-green);
+          "
+        >
+          <div style="font-size: 50px">👤</div>
+          <b id="prof-name" style="font-size: 18px">Leader</b><br />
+          <span
+            style="color: var(--benin-green); font-weight: bold"
+            id="prof-farm"
+            >Ferme Espoir</span
+          >
+          <button
+            onclick="openModal()"
+            style="
+              width: 100%;
+              padding: 10px;
+              border-radius: 10px;
+              font-weight: bold;
+              margin-top: 15px;
+              background: var(--color-acceuil);
+              color: white;
+              border: none;
+            "
+          >
+            ⚙️ MODIFIER CONFIGURATION
+          </button>
+        </div>
+
+        <h3 style="margin-top: 25px; font-size: 16px">
+          🚀 Bientôt sur AgriSync
+        </h3>
+
+        <div class="v2-lock">
+          <div style="font-size: 24px">📈</div>
+          <div style="flex-grow: 1">
+            <div style="display: flex; justify-content: space-between">
+              <b>AgriSync Market</b> <span class="v2-tag">Locked</span>
+            </div>
+            <small
+              >Vendez votre production directement sans intermédiaire.</small
+            >
+          </div>
+        </div>
+
+        <div class="v2-lock">
+          <div style="font-size: 24px">🔬</div>
+          <div style="flex-grow: 1">
+            <div style="display: flex; justify-content: space-between">
+              <b>IA - Docteur Plante</b> <span class="v2-tag">Locked</span>
+            </div>
+            <small
+              >Prenez une photo d'une feuille malade, l'IA vous donne le
+              remède.</small
+            >
+          </div>
+        </div>
+
+        <div class="v2-lock">
+          <div style="font-size: 24px">🏦</div>
+          <div style="flex-grow: 1">
+            <div style="display: flex; justify-content: space-between">
+              <b>Micro-Crédit BSN</b> <span class="v2-tag">Locked</span>
+            </div>
+            <small
+              >Obtenez des prêts basés sur votre score de réputation
+              étoilé.</small
+            >
+          </div>
+        </div>
+
+        <div class="v2-lock">
+          <div style="font-size: 24px">📡</div>
+          <div style="flex-grow: 1">
+            <div style="display: flex; justify-content: space-between">
+              <b>Météo Satellite</b> <span class="v2-tag">Locked</span>
+            </div>
+            <small
+              >Prévisions ultra-précises au-dessus de VOTRE ferme exacte.</small
+            >
+          </div>
+        </div>
+
+        <div class="bsn-signature">
+          <img src="logo_black_star_nexus.png" alt="Black Star Nexus" />
+          <span class="projet">Projet Bénin Synergie Numérique</span>
+          <span class="tech"
+            >Propulsé par Nexus Network © Black Star Nexus</span
+          >
+        </div>
+      </div>
+
+      <div id="photo" class="page">
+        <button class="back-btn" onclick="nav('acceuil')">🔙 Retour</button>
+        <h2>📸 Preuve de Travail</h2>
+        <button
+          style="
+            width: 100%;
+            height: 150px;
+            background: #f1f5f9;
+            border: 3px dashed #cbd5e1;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          "
+        >
+          📷 CAPTURER & DATER
+        </button>
+      </div>
+
+      <div id="calendrier" class="page">
+        <button class="back-btn" onclick="nav('acceuil')">🔙 Retour</button>
+        <h2>📅 Calendrier Visuel</h2>
+        <div class="card" style="border-left: 4px solid var(--benin-green)">
+          <b>AUJOURD'HUI</b><br /><small>Irrigation Parcelle B</small>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--benin-yellow)">
+          <b>DANS 3 JOURS</b><br /><small>Récolte Tomates Prévue</small>
+        </div>
+      </div>
+
+      <div id="sos" class="page">
+        <button class="back-btn" onclick="nav('acceuil')">🔙 Retour</button>
+        <h2 style="color: var(--benin-red)">🆘 Urgences</h2>
+        <button
+          class="card"
+          style="
+            width: 100%;
+            text-align: left;
+            border: 2px solid var(--benin-red);
+            font-weight: bold;
+          "
+        >
+          📞 Appeler Vétérinaire 🚑
+        </button>
+        <button
+          class="card"
+          style="width: 100%; text-align: left; font-weight: bold"
+        >
+          📞 Conseiller Agricole 👨🏿‍🌾
+        </button>
+      </div>
+
+      <div id="notes" class="page">
+        <button class="back-btn" onclick="nav('acceuil')">🔙 Retour</button>
+        <h2>🎤 Mes Notes Vocales</h2>
+        <button
+          style="
+            width: 100%;
+            background: var(--benin-red);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            border: none;
+            font-weight: bold;
+          "
+        >
+          + ENREGISTRER UNE NOTE
+        </button>
+      </div>
+    </main>
+
+    <nav class="tab-bar">
+      <button
+        class="tab-item active"
+        data-tab="acceuil"
+        onclick="nav('acceuil', this)"
+      >
+        <i>🏠</i><span>Accueil</span>
+      </button>
+      <button class="tab-item" data-tab="prod" onclick="nav('prod', this)">
+        <i>🌱</i><span>Prod</span>
+      </button>
+      <button class="tab-item" data-tab="compta" onclick="nav('compta', this)">
+        <i>📊</i><span>Compta</span>
+      </button>
+      <button class="tab-item" data-tab="profil" onclick="nav('profil', this)">
+        <i>👤</i><span>Profil</span>
+      </button>
+    </nav>
+
+    <script>
+      // --- INSTALLATION SERVICE WORKER (PWA/MVP HORS-LIGNE) ---
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./sw.js")
+            .then((reg) =>
+              console.log("Nexus Network prêt pour le hors-ligne !", reg),
+            )
+            .catch((err) => console.log("Erreur Service Worker :", err));
+        });
+      }
+
+      // --- GESTION RÉSEAU & SYNCHRONISATION ---
+      function updateNetworkStatus() {
+        const statusEl = document.getElementById("sync-status");
+        const networkIndicator = document.getElementById("network-indicator");
+
+        if (navigator.onLine) {
+          statusEl.innerText = "🟢 EN LIGNE";
+          statusEl.style.color = "var(--benin-green)";
+          networkIndicator.innerText = "● Nexus Network";
+          networkIndicator.style.color = "var(--benin-green)";
+        } else {
+          statusEl.innerText = "🟠 HORS-LIGNE";
+          statusEl.style.color = "var(--color-prod)";
+          networkIndicator.innerText = "○ Hors-Ligne";
+          networkIndicator.style.color = "var(--color-prod)";
+        }
+      }
+
+      window.addEventListener("online", updateNetworkStatus);
+      window.addEventListener("offline", updateNetworkStatus);
+      updateNetworkStatus();
+
+      // --- LOGIQUE INTERFACE ---
+      let state = { agri: true, ani: false, region: "nord" };
+
+      function nav(id, btn = null) {
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-item")
+          .forEach((t) => t.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+
+        if (btn) btn.classList.add("active");
+        else
+          document
+            .querySelector('[data-tab="acceuil"]')
+            .classList.add("active");
+
+        const banner = document.getElementById("region-banner");
+        const container = document.getElementById("main-container");
+        if (id === "prod") {
+          banner.style.display = "flex";
+          container.classList.add("with-banner");
+        } else {
+          banner.style.display = "none";
+          container.classList.remove("with-banner");
+        }
+        window.scrollTo(0, 0);
+      }
+
+      function openSubPage(id) {
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+        window.scrollTo(0, 0);
+      }
+
+      function openModal() {
+        document.getElementById("profile-modal").style.display = "flex";
+      }
+      function closeModal() {
+        document.getElementById("profile-modal").style.display = "none";
+      }
+
+      function setVal(id, val) {
+        document.getElementById(id).innerText = val;
+      }
+      function dictate(id, text) {
+        document.getElementById(id).innerText = text;
+        setTimeout(() => setVal(id, "Saisie Vocale OK"), 1500);
+      }
+
+      function setModalReg(reg) {
+        ["nord", "centre", "sud"].forEach((r) =>
+          document.getElementById(`reg-${r}`).classList.remove("selected"),
+        );
+        document.getElementById(`reg-${reg}`).classList.add("selected");
+        state.region = reg;
+      }
+
+      function toggleProdType(type) {
+        state[type] = !state[type];
+        document.getElementById(`btn-${type}`).classList.toggle("selected");
+      }
+
+      function saveProfile() {
+        const userName = document.getElementById("val-name").innerText;
+        const farmName = document.getElementById("val-farm").innerText;
+
+        document.getElementById("display-name").innerText = userName;
+        document.getElementById("prof-name").innerText = userName;
+        document.getElementById("current-farm").innerText = farmName;
+        document.getElementById("prof-farm").innerText = farmName;
+
+        document.querySelectorAll(".region-opt").forEach((el) => {
+          el.classList.remove("active");
+          if (el.innerText.toLowerCase().includes(state.region)) {
+            el.classList.add("active");
+            setReg(state.region, el);
+          }
+        });
+
+        buildDynamicProd();
+        closeModal();
+      }
+
+      function buildDynamicProd() {
+        const container = document.getElementById("dynamic-prod-container");
+        container.innerHTML = "";
+        // Unités de mesure selon la région (Sud, Centre, Nord)
+        let unitTxt =
+          state.region === "sud"
+            ? "(Paniers)"
+            : state.region === "centre"
+              ? "(Planches)"
+              : "(Sacs)";
+
+        if (state.agri) {
+          container.innerHTML += `
+                    <div class="cat-group">
+                        <div class="cat-header"><b>🌾 Prod. Agricole</b> <span style="font-size:10px; color:#94a3b8;">${unitTxt}</span></div>
+                        <div class="cat-content">
+                            <button class="card" style="width:100%; border:2px dashed var(--benin-green); font-weight:bold;">🎤 Noter ma récolte</button>
+                        </div>
+                    </div>`;
+        }
+        if (state.ani) {
+          container.innerHTML += `
+                    <div class="cat-group">
+                        <div class="cat-header"><b>🐓 Prod. Animale</b> <span style="font-size:10px; color:#94a3b8;">(Têtes)</span></div>
+                        <div class="cat-content">
+                            <button class="card" style="width:100%; border:2px dashed var(--color-prod); font-weight:bold;">🎤 Déclarer effectif</button>
+                        </div>
+                    </div>`;
+        }
+      }
+
+      function setReg(reg, el) {
+        document
+          .querySelectorAll(".region-opt")
+          .forEach((o) => o.classList.remove("active"));
+        el.classList.add("active");
+        state.region = reg;
+        buildDynamicProd();
+      }
+
+      setInterval(() => {
+        const now = new Date();
+        document.getElementById("clock").innerText = now.toLocaleTimeString(
+          "fr-FR",
+          { hour: "2-digit", minute: "2-digit" },
+        );
+      }, 1000);
+
+      setTimeout(openModal, 500);
+    </script>
+  </body>
+</html>

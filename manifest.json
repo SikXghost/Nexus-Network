@@ -1,0 +1,21 @@
+{
+  "name": "AgriSync - Bénin Synergie Numérique",
+  "short_name": "AgriSync",
+  "description": "Application de terrain du projet BSN, propulsée par Nexus Network (Black Star Nexus).",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#008751",
+  "icons": [
+    {
+      "src": "logo_agrisync.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo_agrisync.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
